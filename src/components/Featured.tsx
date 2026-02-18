@@ -74,7 +74,7 @@ const Featured = () => {
             >
               <div className="flex items-center gap-3">
                 <Sparkles className="text-[#0cd35f]" size={24} />
-                <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900">
+                <h2 className="text-4xl text-white md:text-5xl font-extrabold ">
                   {item.title}
                 </h2>
               </div>

@@ -306,17 +306,29 @@ input {
 .justify-between {
   justify-content: space-between;
 }
+.gap-1 {
+  gap: 0.25rem;
+}
 .gap-2 {
   gap: 0.5rem;
 }
+.gap-3 {
+  gap: 0.75rem;
+}
 .gap-4 {
   gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
 }
 .gap-6 {
   gap: 1.5rem;
 }
 .gap-8 {
   gap: 2rem;
+}
+.gap-10 {
+  gap: 2.5rem;
 }
 .gap-12 {
   gap: 3rem;
@@ -327,6 +339,9 @@ input {
 }
 .absolute {
   position: absolute;
+}
+.fixed {
+  position: fixed;
 }
 .sticky {
   position: sticky;
@@ -346,6 +361,12 @@ input {
 .z-50 {
   z-index: 50;
 }
+.z-\[60\] {
+  z-index: 60;
+}
+.z-\[70\] {
+  z-index: 70;
+}
 
 .h-48 {
   height: 12rem;
@@ -359,6 +380,10 @@ input {
 .w-full {
   width: 100%;
 }
+.w-\[300px\] {
+  width: 300px;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
@@ -385,6 +410,10 @@ input {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -401,6 +430,10 @@ input {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -408,6 +441,10 @@ input {
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 .py-10 {
   padding-top: 2.5rem;
@@ -454,11 +491,17 @@ input {
 .bg-white\/10 {
   background-color: rgba(255, 255, 255, 0.1);
 }
+.bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.2);
+}
 .bg-black\/60 {
   background-color: rgba(0, 0, 0, 0.6);
 }
 .bg-black\/70 {
   background-color: rgba(0, 0, 0, 0.7);
+}
+.bg-transparent {
+  background-color: transparent;
 }
 
 .grid {
@@ -470,6 +513,17 @@ input {
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+
+.hidden {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .sm\:inline {
+    display: inline;
+  }
+}
+
 @media (min-width: 768px) {
   .md\:flex {
     display: flex;
@@ -489,10 +543,24 @@ input {
   .md\:text-7xl {
     font-size: 4.5rem;
   }
+  .md\:hidden {
+    display: none;
+  }
 }
+
 @media (min-width: 1024px) {
   .lg\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .lg\:flex {
+    display: flex;
+  }
+  .lg\:hidden {
+    display: none;
+  }
+  .lg\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
@@ -508,8 +576,14 @@ input {
 .text-white\/60 {
   color: rgba(255, 255, 255, 0.6);
 }
+.text-white\/70 {
+  color: rgba(255, 255, 255, 0.7);
+}
 .text-white\/80 {
   color: rgba(255, 255, 255, 0.8);
+}
+.text-white\/90 {
+  color: rgba(255, 255, 255, 0.9);
 }
 .text-gray-600 {
   color: #4b5563;
@@ -527,6 +601,9 @@ input {
   color: #c3f5e0;
 }
 
+.text-xs {
+  font-size: 0.75rem;
+}
 .text-sm {
   font-size: 0.875rem;
 }
@@ -568,6 +645,12 @@ input {
 }
 .text-center {
   text-align: center;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.tracking-widest {
+  letter-spacing: 0.1em;
 }
 
 .rounded {
@@ -683,4 +766,20 @@ input {
 }
 .space-y-24 > * + * {
   margin-top: 6rem;
+}
+
+/* NEW NAVBAR UTILS */
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.bg-nav-scrolled {
+  background-color: rgba(13, 21, 44, 0.95);
+  border-bottom: 1px solid rgba(12, 211, 95, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }

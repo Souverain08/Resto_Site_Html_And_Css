@@ -1,9 +1,19 @@
-import { Search, Phone, ChefHat } from "lucide-react";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { Search, Phone, ChefHat, X, Menu, MapPin, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const menuItems = [
     { name: "Accueil", href: "#accueil" },
@@ -13,181 +23,196 @@ const Navbar = () => {
   ];
 
   return (
-    <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] }}
-      className="fixed top-0 left-0 right-0 z-50"
-    >
-      {/* Navbar Container with Glassmorphism */}
-      <div className="relative">
-        {/* Background with blur */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0d152c]/95 via-[#0d152c]/90 to-[#0d152c]/95 backdrop-blur-2xl border-b border-[#0cd35f]/20" />
-
-        {/* Glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0cd35f]/5 to-transparent" />
-
-        {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-24">
+    <>
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.6, 0.05, 0.01, 0.9] }}
+        className={`fixed w-full top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled
+            ? "py-2 bg-nav-scrolled backdrop-blur-xl"
+            : "py-6 bg-transparent"
+        }`}
+      >
+        <div className="relative w-full mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between">
             {/* Logo Section */}
             <motion.a
               href="/"
               className="flex items-center gap-4 group relative z-10"
               whileHover={{ scale: 1.03 }}
-              transition={{ type: "spring", stiffness: 400, damping: 15 }}
             >
-              {/* Logo Icon with animated glow */}
               <div className="relative">
                 <motion.div
-                  className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0cd35f] via-[#0aa34a] to-[#0b918a] flex items-center justify-center shadow-2xl relative overflow-hidden"
+                  className={`relative overflow-hidden rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-500 ${
+                    isScrolled ? "w-10 h-10" : "w-12 h-12"
+                  }`}
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #0cd35f 0%, #0aa34a 100%)",
+                  }}
                   whileHover={{ rotate: [0, -5, 5, 0] }}
-                  transition={{ duration: 0.5 }}
                 >
                   <ChefHat
-                    className="w-7 h-7 text-white relative z-10"
+                    className={`${
+                      isScrolled ? "w-5 h-5" : "w-6 h-6"
+                    } text-white relative z-10`}
                     strokeWidth={2.5}
                   />
-                  {/* Shimmer effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                    animate={{ x: ["-100%", "200%"] }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  />
+                  <div className="absolute inset-0 bg-white/20" />
                 </motion.div>
-                {/* Pulsing glow */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#0cd35f] to-[#0b918a] blur-xl opacity-40"
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.6, 0.4] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                />
               </div>
 
-              {/* Logo Text */}
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-black bg-gradient-to-r from-[#0cd35f] via-[#0aa34a] to-[#0cd35f] bg-clip-text text-transparent">
+                  <span
+                    className="text-2xl font-black text-transparent bg-clip-text"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(to right, #0cd35f, #0cd35f)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
                     KB
                   </span>
-                  <span className="text-3xl font-black text-white">RESTO</span>
-                </div>
-                <div className="flex items-center gap-2 -mt-1">
-                  <div className="h-px w-8 bg-gradient-to-r from-[#0cd35f] to-transparent" />
-                  <span className="text-[9px] font-bold text-[#0cd35f] tracking-[0.2em] uppercase">
-                    Kalemie
-                  </span>
+                  <span className="text-2xl font-black text-white">RESTO</span>
                 </div>
               </div>
             </motion.a>
 
             {/* Desktop Menu */}
-            <div className="hidden lg:flex items-center gap-1">
-              {menuItems.map((item, index) => (
-                <motion.div
+            <div className="hidden lg:flex items-center gap-8">
+              {menuItems.map((item) => (
+                <a
                   key={item.name}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + index * 0.05, duration: 0.5 }}
-                  onHoverStart={() => setHoveredItem(item.name)}
-                  onHoverEnd={() => setHoveredItem(null)}
-                  className="relative"
+                  href={item.href}
+                  onMouseEnter={() => setHoveredItem(item.name)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                  className="relative px-5 py-2 group block"
                 >
-                  <a
-                    href={item.href}
-                    className="relative px-6 py-3 text-white/80 font-semibold text-[15px] hover:text-white transition-colors duration-300 block"
-                  >
+                  <span className="relative z-10 text-[15px] font-medium text-white/90 group-hover:text-white transition-colors duration-300">
                     {item.name}
-
-                    {/* Hover background */}
+                  </span>
+                  {hoveredItem === item.name && (
                     <motion.div
-                      className="absolute inset-0 rounded-xl bg-white/5"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{
-                        opacity: hoveredItem === item.name ? 1 : 0,
-                        scale: hoveredItem === item.name ? 1 : 0.8,
-                      }}
+                      layoutId="navbar-hover"
+                      className="absolute inset-0 rounded-lg bg-white/10 backdrop-blur-sm"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
                       transition={{ duration: 0.2 }}
                     />
-
-                    {/* Underline */}
-                    <motion.div
-                      className="absolute bottom-1 left-6 right-6 h-0.5 rounded-full bg-gradient-to-r from-[#0cd35f] via-[#0aa34a] to-[#0cd35f]"
-                      initial={{ scaleX: 0, opacity: 0 }}
-                      animate={{
-                        scaleX: hoveredItem === item.name ? 1 : 0,
-                        opacity: hoveredItem === item.name ? 1 : 0,
-                      }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                    />
-                  </a>
-                </motion.div>
+                  )}
+                </a>
               ))}
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-3">
-              {/* Search Button - Desktop */}
+            <div className="flex items-center gap-5">
               <motion.button
-                whileHover={{ scale: 1.08, rotate: 5 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="hidden md:flex w-12 h-12 items-center justify-center rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#0cd35f]/40 text-white/60 hover:text-[#0cd35f] transition-all duration-300 backdrop-blur-sm"
+                className="hidden md:flex w-10 h-10 items-center justify-center rounded-full bg-white/10 hover:bg-[#0cd35f] text-white transition-colors border border-white/10"
               >
-                <Search size={20} strokeWidth={2} />
+                <Search size={18} strokeWidth={2.5} />
               </motion.button>
 
-              {/* Call Button */}
               <motion.a
                 href="tel:+243"
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="relative group overflow-hidden"
+                whileTap={{ scale: 0.95 }}
+                className={`hidden sm:inline relative group overflow-hidden rounded-full font-bold text-white shadow-lg transition-all duration-300 ${
+                  isScrolled ? "px-5 py-2.5" : "px-6 py-3"
+                }`}
+                style={{
+                  background: "linear-gradient(to right, #0cd35f, #0b918a)",
+                }}
               >
-                <div className="relative flex items-center gap-2.5 px-7 py-3.5 bg-gradient-to-r from-[#0cd35f] via-[#0aa34a] to-[#0cd35f] rounded-xl font-bold text-white shadow-lg shadow-[#0cd35f]/20 hover:shadow-xl hover:shadow-[#0cd35f]/40 transition-all duration-300">
-                  <Phone size={18} strokeWidth={2.5} />
-                  <span className="hidden sm:inline text-[15px]">Réserver</span>
-
-                  {/* Shimmer effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-12"
-                    animate={{ x: ["-200%", "200%"] }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  />
+                <div className="relative flex items-center gap-2 z-10">
+                  <Phone size={16} className="fill-current" />
+                  <span className="text-sm">Réserver</span>
                 </div>
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
               </motion.a>
 
-              {/* Mobile Menu Button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="lg:hidden w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br from-[#0cd35f] to-[#0b918a] text-white shadow-lg"
+              {/* Mobile Menu Button - Visible ONLY on small screens */}
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
               >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </motion.button>
+                <Menu size={22} />
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed w-full inset-0 bg-black/70 backdrop-blur-sm lg:hidden z-[60]"
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 w-[300px] z-[70] bg-[#0d152c] border-l border-white/10 lg:hidden flex flex-col shadow-2xl"
+            >
+              <div className="p-6 flex items-center justify-between border-b border-white/10">
+                <span className="text-xl font-bold text-white">Menu</span>
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+                {menuItems.map((item, index) => (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center gap-4 px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/5 transition-all active:scale-95"
+                  >
+                    <span className="text-lg font-medium">{item.name}</span>
+                  </motion.a>
+                ))}
+              </div>
+
+              <div className="p-6 border-t border-white/10 space-y-4">
+                <div className="flex items-center gap-3 text-white/60 text-sm">
+                  <MapPin size={16} className="text-[#0cd35f]" />
+                  <span>Kalemie, RDC</span>
+                </div>
+                <div className="flex items-center gap-3 text-white/60 text-sm">
+                  <Clock size={16} className="text-[#0cd35f]" />
+                  <span>08:00 - 22:00</span>
+                </div>
+                <button
+                  className="w-full py-3 mt-4 rounded-xl text-white font-bold transition-colors shadow-lg"
+                  style={{ background: "#0cd35f" }}
+                >
+                  Réserver une table
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
